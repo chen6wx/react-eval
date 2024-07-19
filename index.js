@@ -207,7 +207,7 @@ const Controller = ((model, view) => {
     });
   };
 
-  const handleUpdateAmount = (id, amount) => {
+  const updateAmount = (id, amount) => {
   };
 
 
