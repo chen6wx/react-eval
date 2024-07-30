@@ -128,7 +128,7 @@ const View = (() => {
           <li id="inventory-${item.id}">
             ${item.content}
             <button class="subtract-btn" data-id="${item.id}">-</button>
-            <span class="amount">0</span>
+            <span class="amount" id="span-${item.id}">0</span>
             <button class="add-btn" data-id="${item.id}">+</button>
             <button class="add-to-cart-btn" data-id="${item.id}">Add to Cart</button>
           </li>
@@ -208,6 +208,11 @@ const Controller = ((model, view) => {
   };
 
   const updateAmount = (id, amount) => {
+    const element = document.getElementById("span-"+id);
+    const original = Number(element.innerText);
+    const updated = original + amount;
+    element.innerHTML = updated;
+
   };
 
 
@@ -216,14 +221,14 @@ const Controller = ((model, view) => {
     if (item) {
       const existingCartItem = state.cart.find((item) => item.id === parseInt(id));
       if (existingCartItem) {
-        const newAmount = existingCartItem.amount + 1;
+        const newAmount = Number(existingCartItem.amount) + Number(document.getElementById("span-"+id).innerText);
         model.updateCart(existingCartItem.id, newAmount)
           .then(() => model.getCart())
           .then((data) => {
             state.cart = data;
           });
       } else {
-        model.addToCart({ id: item.id, content: item.content, amount: 1 })
+        model.addToCart({ id: item.id, content: item.content, amount: document.getElementById("span-"+id).innerText })
           .then(() => model.getCart())
           .then((data) => {
             state.cart = data;
